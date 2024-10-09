@@ -234,6 +234,7 @@ TEST(TDynamicVector, can_multiply_vectors_with_equal_size)
 	res[0] = 6;
 	res[1] = 6;
 
+	//EXPECT_EQ(v1 * v2, res); TODO
 	ADD_FAILURE();
 }
 

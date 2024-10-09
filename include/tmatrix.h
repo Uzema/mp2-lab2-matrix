@@ -173,9 +173,17 @@ public:
       }
       return res;
   }
-  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v) //noexcept(noexcept(T()))
   {
+      if (sz != v.sz) {
+          throw "sizes are not equal";
+      }
 
+      T sum = 0;
+      for (int i = 0; i < v.sz; i++) {
+          sum += pMem[i] * v.pMem[i];
+      }
+      return sum;
   }
 
   friend void swap(TDynamicVector& lhs, TDynamicVector& rhs) noexcept
@@ -219,27 +227,77 @@ public:
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
+      if (sz != m.sz) {
+          return false;
+      }
+
+      for (size_t i = 0; i < sz; i++) {
+          if (pMem[i] != m.pMem[i]) {
+              return false;
+          }
+      }
+      return true;
   }
 
   // матрично-скалярные операции
   TDynamicVector<T> operator*(const T& val)
   {
+      TDynamicVector<T> res(sz);
+      for (int i = 0; i < sz; i++) {
+          res.pMem[i] = pMem[i] * val;
+      }
+      return res;
   }
 
   // матрично-векторные операции
   TDynamicVector<T> operator*(const TDynamicVector<T>& v)
   {
+      TDynamicVector<T> res(sz);
+      if (sz != v.sz) {
+          throw "vector sizes are not equal";
+      }
+      for (int i = 0; i < sz; i++) {
+          res.pMem[i] = pMem[i] * v.pMem[i];
+      }
+      return res;
   }
 
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
+      if (sz != m.sz) {
+          throw "sizes are not equal";
+      }
+
+      TDynamicMatrix res(sz);
+      for (int i = 0; i < sz; i++) {
+          res.pMem[i] = pMem[i] + m.pMem[i];
+      }
+      return res;
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
+      if (sz != m.sz) {
+          throw "sizes are not equal";
+      }
+
+      TDynamicMatrix res(sz);
+      for (int i = 0; i < sz; i++) {
+          res.pMem[i] = pMem[i] - m.pMem[i];
+      }
+      return res;
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
+      if (sz != m.sz) {
+          throw "sizes are not equal";
+      }
+
+      TDynamicMatrix res(sz);
+      for (int i = 0; i < sz; i++) {
+          res.pMem[i] = pMem[i] * m.pMem[i];
+      }
+      return res;
   }
 
   // ввод/вывод

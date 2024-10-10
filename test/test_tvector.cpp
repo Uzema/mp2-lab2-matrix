@@ -257,3 +257,29 @@ TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size)
 	ASSERT_ANY_THROW(v1 * v2);
 }
 
+TEST(TDynamicVector, can_move_constructor)
+{
+	TDynamicVector<int> v1(2);
+	int* tmp = v1.get_pMem();
+	TDynamicVector<int> v2(std::move(v1));
+
+	EXPECT_EQ(v1.size(), 0);
+	EXPECT_EQ(v1.get_pMem(), nullptr);
+
+	EXPECT_EQ(v2.size(), 2);
+	EXPECT_EQ(v2.get_pMem(), tmp);
+}
+
+TEST(TDynamicVector, can_move_assign)
+{
+	TDynamicVector<int> v1(2);
+	int* tmp = v1.get_pMem();
+	TDynamicVector<int> v2 = std::move(v1);
+
+	EXPECT_EQ(v1.size(), 0);
+	EXPECT_EQ(v1.get_pMem(), nullptr);
+
+	EXPECT_EQ(v2.size(), 2);
+	EXPECT_EQ(v2.get_pMem(), tmp);
+}
+

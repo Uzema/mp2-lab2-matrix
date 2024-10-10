@@ -205,6 +205,10 @@ public:
       ostr << v.pMem[i] << ' '; // требуется оператор<< для типа T
     return ostr;
   }
+
+  T* get_pMem() {
+    return pMem;
+  }
 };
 
 
@@ -299,7 +303,12 @@ public:
 
       TDynamicMatrix res(sz);
       for (int i = 0; i < sz; i++) {
-          res.pMem[i] = pMem[i] * m.pMem[i];
+        for (int j = 0; j < sz; j++) {
+            res.pMem[i][j] = 0;
+            for (int k = 0; k < sz; k++) {
+                res.pMem[i][j] += pMem[i][k] * m.pMem[k][j];
+            }
+        }
       }
       return res;
   }

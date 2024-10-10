@@ -163,4 +163,85 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 
 	ASSERT_ANY_THROW(m1 - m2);
 }
+//
+TEST(TDynamicMatrix, can_multiply_matrices_with_equal_size)
+{
+	TDynamicMatrix<int> m1(5);
+	TDynamicMatrix<int> m2(5);
 
+	ASSERT_NO_THROW(m1 * m2);
+}
+
+TEST(TDynamicMatrix, cant_multiply_matrixes_with_not_equal_size)
+{
+	TDynamicMatrix<int> m1(5);
+	TDynamicMatrix<int> m2(10);
+
+	ASSERT_ANY_THROW(m1 * m2);
+}
+
+TEST(TDynamicMatrix, can_correctly_add_matrices_with_equal_size)
+{
+	int n = 2;
+	TDynamicMatrix<int> m1(n);
+	TDynamicMatrix<int> m2(n);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			m1[i][j] = 1;
+			m2[i][j] = 2;
+		}
+	}
+	TDynamicMatrix<int> res(n);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			res[i][j] = 3;
+		}
+	}
+
+	EXPECT_EQ(m1 + m2, res);
+}
+
+TEST(TDynamicMatrix, can_correctly_subtract_matrices_with_equal_size)
+{
+	int n = 2;
+	TDynamicMatrix<int> m1(n);
+	TDynamicMatrix<int> m2(n);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			m1[i][j] = 1;
+			m2[i][j] = 2;
+		}
+	}
+	TDynamicMatrix<int> res(n);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			res[i][j] = -1;
+		}
+	}
+
+	EXPECT_EQ(m1 - m2, res);
+}
+
+TEST(TDynamicMatrix, can_correctly_multiply_matrices_with_equal_size)
+{
+	int n = 2;
+	TDynamicMatrix<int> m1(n);
+	m1[0][0] = 1;
+	m1[0][1] = 2;
+	m1[1][0] = 2;
+	m1[1][1] = 1;
+
+	TDynamicMatrix<int> m2(n);
+	m2[0][0] = 3;
+	m2[0][1] = 2;
+	m2[1][0] = 1;
+	m2[1][1] = 1;
+
+	TDynamicMatrix<int> res(n);
+	res[0][0] = 5;
+	res[0][1] = 4;
+	res[1][0] = 7;
+	res[1][1] = 5;
+
+	EXPECT_EQ(m1 * m2, res);
+}

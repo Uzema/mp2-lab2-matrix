@@ -25,8 +25,8 @@ protected:
 public:
   TDynamicVector(size_t size = 1) : sz(size)
   {
-    if (sz == 0)
-      throw out_of_range("Vector size should be greater than zero");
+    if (sz == 0 || sz >= MAX_VECTOR_SIZE)
+      throw out_of_range("Vector size should be greater than zero and smaller than MAX_VECTOR_SIZE");
     pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
   }
   TDynamicVector(T* arr, size_t s) : sz(s)
@@ -218,8 +218,12 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
 public:
   TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
-    for (size_t i = 0; i < sz; i++)
-      pMem[i] = TDynamicVector<T>(sz);
+      if (sz == 0 || sz >= MAX_MATRIX_SIZE) {
+          throw out_of_range("Matrix size should be greater than zero and smaller than MAX_MATRIX_SIZE");
+      }
+      for (size_t i = 0; i < sz; i++) {
+          pMem[i] = TDynamicVector<T>(sz);
+      }
   }
 
   using TDynamicVector<TDynamicVector<T>>::operator[];
@@ -231,7 +235,7 @@ public:
           return false;
       }
 
-      for (size_t i = 0; i < sz; i++) {
+      for (int i = 0; i < sz; i++) {
           if (pMem[i] != m.pMem[i]) {
               return false;
           }
@@ -303,9 +307,40 @@ public:
   // ввод/вывод
   friend istream& operator>>(istream& istr, TDynamicMatrix& v)
   {
+      for (int i = 0; i < sz; i++) {
+          for (int j = 0; j < sz; j++) {
+              istr >> v.pMem[i][j];
+          }
+       }
+      return istr;
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
+      for (int i = 0; i < v.sz; i++) {
+          ostr << v.pMem[i] << endl;
+      }
+      return ostr;
+  }
+
+  int get_size() {
+      return sz;
+  }
+
+  T& at(size_t ind1, size_t ind2)
+  {
+      if (ind1 < 0 || ind2 < 0 || ind1 >= sz || ind2 >= sz) {
+          throw "Wrong index";
+      }
+
+      return pMem[ind1][ind2];
+  }
+  const T& at(size_t ind1, size_t ind2) const
+  {
+      if (ind1 < 0 || ind2 < 0 || ind1 >= sz || ind2 >= sz) {
+          throw "Wrong index";
+      }
+
+      return pMem[ind1][ind2];
   }
 };
 

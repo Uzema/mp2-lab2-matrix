@@ -34,7 +34,17 @@ TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
 
 TEST(TDynamicVector, copied_vector_has_its_own_memory)
 {
-  ADD_FAILURE();
+	const int n = 10;
+	TDynamicVector<int> v1(n);
+	for (int i = 0; i < n; i++) {
+		v1[i] = 3;
+	}
+	TDynamicVector<int> v2(v1);
+
+	v2[0] = 4;
+
+	EXPECT_EQ(v1[0], 3);
+	EXPECT_EQ(v2[0], 4);
 }
 
 TEST(TDynamicVector, can_get_size)
@@ -225,21 +235,25 @@ TEST(TDynamicVector, can_multiply_vectors_with_equal_size)
 {
 	TDynamicVector<int> v1(2);
 	TDynamicVector<int> v2(2);
-	TDynamicVector<int> res(2);
 
 	v1[0] = 2;
 	v1[1] = 2;
 	v2[0] = 3;
 	v2[1] = 3;
-	res[0] = 6;
-	res[1] = 6;
 
-	//EXPECT_EQ(v1 * v2, res); TODO
-	ADD_FAILURE();
+	ASSERT_NO_THROW(v1 * v2);
 }
 
 TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size)
 {
-  ADD_FAILURE();
+	TDynamicVector<int> v1(2);
+	TDynamicVector<int> v2(5);
+
+	v1[0] = 2;
+	v1[1] = 2;
+	v2[0] = 3;
+	v2[1] = 3;
+
+	ASSERT_ANY_THROW(v1 * v2);
 }
 
